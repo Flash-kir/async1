@@ -89,7 +89,6 @@ async def animate_spaceship(canvas, start_row, start_column, frames):
             start_column -= col_direction
             col -= col_direction
 
-
         draw_frame(
             canvas,
             row,
@@ -128,7 +127,7 @@ def draw(canvas):
         round(row_max/2),
         round(col_max/2)
     )
-    
+
     while True:
         try:
             fire_corutine.send(None)
@@ -136,7 +135,7 @@ def draw(canvas):
             time.sleep(0.1)
         except StopIteration:
             break
-    
+
     coroutines = [space_ship_corutine]
     for a in range(200):
         star_row = random.randint(1, row_max - 2)
