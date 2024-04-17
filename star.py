@@ -21,18 +21,22 @@ async def blink(canvas, row, column, symbol='*'):
 def draw(canvas):
     canvas.border()
     curses.curs_set(False)
-    star = blink(canvas, 5, 20)
+    star1 = blink(canvas, 5, 20)
+    star2 = blink(canvas, 6, 21)
+    star3 = blink(canvas, 7, 22)
+    star4 = blink(canvas, 8, 23)
+    star5 = blink(canvas, 9, 24)
+
+    coroutines = [star1, star2, star3, star4, star5]
+
     while True:
-        star.send(None)
-        canvas.refresh()
-        time.sleep(0.5)
-        star.send(None)
-        canvas.refresh()
-        time.sleep(0.5)
-        star.send(None)
-        canvas.refresh()
-        time.sleep(0.5)
-        star.send(None)
+        for coroutine in coroutines.copy():
+            try:
+                coroutine.send(None)
+            except StopIteration:
+                coroutines.remove(coroutine)
+        if len(coroutines) == 0:
+            break
         canvas.refresh()
         time.sleep(0.5)
 
