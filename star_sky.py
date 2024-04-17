@@ -8,19 +8,19 @@ import os
 async def blink(canvas, row, column, symbol='*'):
     while True:
         canvas.addstr(row, column, symbol, curses.A_DIM)
-        for i in range(20):
+        for i in range(random.randint(10, 20)):
             await asyncio.sleep(0)
 
         canvas.addstr(row, column, symbol)
-        for i in range(3):
+        for i in range(random.randint(1, 8)):
             await asyncio.sleep(0)
 
         canvas.addstr(row, column, symbol, curses.A_BOLD)
-        for i in range(5):
+        for i in range(random.randint(3, 15)):
             await asyncio.sleep(0)
 
         canvas.addstr(row, column, symbol)
-        for i in range(5):
+        for i in range(random.randint(1, 8)):
             await asyncio.sleep(0)
 
 
