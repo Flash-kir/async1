@@ -60,28 +60,43 @@ async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0
 
 async def animate_spaceship(canvas, start_row, start_column, frames):
     last_frame = ''
-    row_delta = 0
-    col_delta = 0
+    row_direction = col_direction = 0
+    (col_max, row_max) = os.get_terminal_size(0)
+    row = start_row
+    col = start_column
     for frame in cycle(frames):
         if last_frame:
             draw_frame(
                 canvas,
-                start_row - row_delta,
-                start_column - col_delta,
+                row,
+                col,
                 last_frame,
                 negative=True
             )
+        row_direction, col_direction, space_pressed = read_controls(canvas)
+
+        start_row += row_direction
+        start_column += col_direction
+
         ship_height, ship_width = get_frame_size(frame)
-        row_delta = round(ship_height/2)
-        col_delta = round(ship_width/2)
+
+        row = start_row - round(ship_height/2)
+        col = start_column - round(ship_width/2)
+        if row == 0 or row == row_max - ship_height:
+            start_row -= row_direction
+            row -= row_direction
+        if col == 0 or col == col_max - ship_width:
+            start_column -= col_direction
+            col -= col_direction
+
+
         draw_frame(
             canvas,
-            start_row - row_delta,
-            start_column - col_delta,
+            row,
+            col,
             frame)
         last_frame = frame
-        for i in range(random.randint(2, 4)):
-            await asyncio.sleep(0)
+        await asyncio.sleep(0)
 
 
 def load_space_ship_frame(file_path):
@@ -98,6 +113,7 @@ def draw(canvas):
     star_symbols = ['*', ':', '+', '.']
     (col_max, row_max) = os.get_terminal_size(0)
     canvas.border()
+    canvas.nodelay(True)
     curses.curs_set(False)
 
     space_ship_corutine = animate_spaceship(
@@ -112,6 +128,7 @@ def draw(canvas):
         round(row_max/2),
         round(col_max/2)
     )
+    '''
     while True:
         try:
             fire_corutine.send(None)
@@ -119,7 +136,7 @@ def draw(canvas):
             time.sleep(0.1)
         except StopIteration:
             break
-
+    '''
     coroutines = [space_ship_corutine]
     for a in range(200):
         star_row = random.randint(1, row_max - 2)
