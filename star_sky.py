@@ -9,22 +9,22 @@ from curses_tools import get_frame_size
 from curses_tools import read_controls
 
 
-async def blink(canvas, row, column, symbol='*'):
+async def blink(canvas, row, column, offset_tics, symbol='*'):
     while True:
         canvas.addstr(row, column, symbol, curses.A_DIM)
-        for i in range(random.randint(10, 20)):
+        for i in range(offset_tics[0]):
             await asyncio.sleep(0)
 
         canvas.addstr(row, column, symbol)
-        for i in range(random.randint(1, 8)):
+        for i in range(offset_tics[1]):
             await asyncio.sleep(0)
 
         canvas.addstr(row, column, symbol, curses.A_BOLD)
-        for i in range(random.randint(3, 15)):
+        for i in range(offset_tics[2]):
             await asyncio.sleep(0)
 
         canvas.addstr(row, column, symbol)
-        for i in range(random.randint(1, 8)):
+        for i in range(offset_tics[3]):
             await asyncio.sleep(0)
 
 
@@ -128,24 +128,23 @@ def draw(canvas):
         round(col_max/2)
     )
 
-    while True:
-        try:
-            fire_corutine.send(None)
-            canvas.refresh()
-            time.sleep(0.1)
-        except StopIteration:
-            break
-
-    coroutines = [space_ship_corutine]
+    coroutines = [fire_corutine, space_ship_corutine]
     for a in range(200):
         star_row = random.randint(1, row_max - 2)
         star_col = random.randint(1, col_max - 2)
         star_symbol = random.choice(star_symbols)
+        offset_tics = [
+            random.randint(10, 20),
+            random.randint(1, 8),
+            random.randint(3, 15),
+            random.randint(1, 8),
+        ]
         coroutines.append(
             blink(
                 canvas,
                 star_row,
                 star_col,
+                offset_tics,
                 symbol=star_symbol
             )
         )
