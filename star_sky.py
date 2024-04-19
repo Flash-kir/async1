@@ -107,7 +107,12 @@ def load_space_ship_frame(file_path):
 def draw(canvas):
     space_ship_frame_1 = load_space_ship_frame('frames/rocket_frame_1.txt')
     space_ship_frame_2 = load_space_ship_frame('frames/rocket_frame_2.txt')
-    frames = [space_ship_frame_1, space_ship_frame_2]
+    frames = [
+        space_ship_frame_1,
+        space_ship_frame_1,
+        space_ship_frame_2,
+        space_ship_frame_2,
+    ]
 
     star_symbols = ['*', ':', '+', '.']
     (col_max, row_max) = os.get_terminal_size(0)
