@@ -9,7 +9,6 @@ from curses_tools import get_frame_size
 from curses_tools import read_controls
 from space_garbage import fly_garbage
 from physics import update_speed
-from obstacles import show_obstacles
 from space_garbage import obstacles
 from explosion import explode
 from game_scenario import get_garbage_delay_tics
@@ -67,7 +66,7 @@ async def game_over(canvas):
         await asyncio.sleep(0)
 
 
-async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0):
+async def fire(canvas, start_row, start_column, rows_speed=-0.3, cols_speed=0):
     """Display animation of gun shot, direction and speed can be specified."""
 
     row, column = start_row, start_column
@@ -80,9 +79,9 @@ async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0
     canvas.addstr(round(row), round(column), ' ')
 
     row += rows_speed
-    column += columns_speed
+    column += cols_speed
 
-    symbol = '-' if columns_speed else '|'
+    symbol = '-' if cols_speed else '|'
 
     rows, columns = canvas.getmaxyx()
     max_row, max_column = rows - 1, columns - 1
@@ -94,12 +93,11 @@ async def fire(canvas, start_row, start_column, rows_speed=-0.3, columns_speed=0
         await asyncio.sleep(0)
         canvas.addstr(round(row), round(column), ' ')
         row += rows_speed
-        column += columns_speed
+        column += cols_speed
         for obstacle in obstacles:
             if obstacle.has_collision(row, column):
                 obstacles.remove(obstacle)
                 await explode(canvas, row, column)
-#                coroutines.append(game_over(canvas))
                 return
 
 
@@ -122,7 +120,12 @@ async def animate_spaceship(canvas, start_row, start_column, frames):
 
         row_direction, col_direction, space_pressed = read_controls(canvas)
 
-        row_speed, column_speed = update_speed(row_speed, column_speed, row_direction, col_direction)
+        row_speed, column_speed = update_speed(
+                                        row_speed,
+                                        column_speed,
+                                        row_direction,
+                                        col_direction
+                                    )
 
         start_row += row_speed
         start_column += column_speed
@@ -225,17 +228,9 @@ def draw(canvas):
         frames
     )
 
-#    fire_corutine = fire(
-#        canvas,
- #       round(row_max/2),
-#        round(col_max/2)
-#    )
-
-#    coroutines.append(fire_corutine)
     coroutines.append(years(canvas))
     coroutines.append(space_ship_corutine)
     coroutines.append(fill_orbit_with_garbage(canvas))
-#    coroutines.append(show_obstacles(canvas, obstacles))
 
     for a in range(200):
         star_row = random.randint(1, row_max - 2)
