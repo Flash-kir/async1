@@ -217,7 +217,6 @@ def draw(canvas):
 
     star_symbols = ['*', ':', '+', '.']
     (col_max, row_max) = os.get_terminal_size(0)
-    canvas.border()
     canvas.nodelay(True)
     curses.curs_set(False)
 
