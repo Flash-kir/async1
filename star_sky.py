@@ -181,14 +181,7 @@ def load_space_ship_frame(file_path):
 
 async def fill_orbit_with_garbage(canvas):
     garbage_frames_path = 'frames/garbage/'
-    garbage_frame_names = [
-        'lump.txt',
-        'duck.txt',
-        'hubble.txt',
-        'trash_large.txt',
-        'trash_small.txt',
-        'trash_xl.txt',
-    ]
+    garbage_frame_names = os.listdir(garbage_frames_path)
     while True:
         random_frame = garbage_frames_path + random.choice(garbage_frame_names)
         (col_max, row_max) = os.get_terminal_size(0)
