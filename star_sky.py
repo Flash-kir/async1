@@ -255,7 +255,6 @@ def draw(canvas):
         for coroutine in coroutines.copy():
             try:
                 coroutine.send(None)
-                fill_orbit_with_garbage(canvas)
             except StopIteration:
                 coroutines.remove(coroutine)
         if len(coroutines) == 0:
