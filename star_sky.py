@@ -17,7 +17,7 @@ coroutines = []
 game_year = 1957
 
 
-async def years(canvas):
+async def increase_game_years(canvas):
     (col_max, row_max) = os.get_terminal_size(0)
     global game_year
     while True:
@@ -227,7 +227,7 @@ def draw(canvas):
         frames
     )
 
-    coroutines.append(years(canvas))
+    coroutines.append(increase_game_years(canvas))
     coroutines.append(space_ship_corutine)
     coroutines.append(fill_orbit_with_garbage(canvas))
 
