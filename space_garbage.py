@@ -33,4 +33,6 @@ async def fly_garbage(canvas, column, garbage_frame, speed=0.5):
         if obstracle not in obstacles:
             return
         obstracle.row += speed
+        if obstracle.row > rows_number:
+            obstacles.remove(obstracle)
         row += speed
