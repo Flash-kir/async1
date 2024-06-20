@@ -21,7 +21,7 @@ async def increase_game_years(canvas):
     (col_max, row_max) = os.get_terminal_size(0)
     global game_year
     while True:
-        draw_frame(canvas, 0, 0, str(game_year))
+        draw_frame(canvas, 0, 0, str(game_year) + ' ' + str(len(obstacles)))
         await sleep(range(6))
         game_year += 1
 
